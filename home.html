@@ -25,6 +25,14 @@ body, html {
   overflow-x:hidden; 
 }
 
+/* فاصله برای نوار پایینی ثابت */
+main { 
+  flex:1; 
+  position:relative; 
+  overflow-y:auto; 
+  padding-bottom:100px; /* فضای کافی برای نوار ثابت و دایره */
+}
+
 /* اسپلش لودینگ */
 #splash {
   position:fixed;
@@ -54,11 +62,6 @@ body, html {
   display:flex; 
   flex-direction:column; 
   height:100%; 
-}
-main { 
-  flex:1; 
-  position:relative; 
-  overflow-y:auto; 
 }
 
 /* بک‌گراند گیمری متحرک */
@@ -187,15 +190,23 @@ h1 {
   border-radius:5px; 
 }
 
-/* ناوبری پایین */
+/* ناوبری پایین (ثابت) */
 .bottom-nav { 
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
   height:60px; 
   display:flex; 
+  align-items:center;
+  justify-content:space-around;
   background:#111; 
   border-top:1px solid #333; 
+  z-index:999;
+  padding:0 40px; /* فاصله کناری تا دکمه‌ها */
 }
 .bottom-nav button { 
-  flex:1; 
+  flex:0 0 auto;
   border:none; 
   background:none; 
   color:#fff; 
@@ -205,6 +216,7 @@ h1 {
   flex-direction:column; 
   align-items:center; 
   justify-content:center; 
+  padding:8px 12px;
 }
 .bottom-nav button svg { 
   width:24px; 
@@ -214,6 +226,7 @@ h1 {
 }
 .bottom-nav button.active { 
   background:#222; 
+  border-radius:8px;
 }
 
 /* محصولات */
@@ -246,6 +259,69 @@ h1 {
   font-weight:bold; 
   margin-top:5px; 
 }
+
+/* عنوان Best Player */
+.best-player-title {
+  font-size: 28px;
+  font-weight: bold;
+  color: #0ff;
+  text-align: left;
+  margin: 20px 0 10px 10px;
+  text-shadow: 0 0 5px #0ff, 0 0 15px #0ff;
+}
+
+/* دکمه بروزرسانی */
+.refresh-btn {
+  position: absolute;
+  top: -28px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(180deg, #0b0b0b, #161616);
+  border: 3px solid #0ff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.6);
+  cursor:pointer;
+  z-index:1001;
+  transition: transform .15s ease;
+}
+.refresh-btn:active { transform: translateX(-50%) scale(.95); }
+.refresh-btn .icon {
+  width:22px;
+  height:22px;
+  fill:#0ff;
+}
+.refresh-btn.spin .icon {
+  animation: spinIcon 0.9s linear infinite;
+}
+@keyframes spinIcon {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* جلوگیری از اینکه محتوای اصلی زیر نوار ثابت برود */
+.app-space-fixer {
+  height: 0px;
+}
+
+/* جلوگیری از هایلایت آبی هنگام کلیک */
+button, .refresh-btn {
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
+}
+button:focus, .refresh-btn:focus {
+  outline: none;
+}
+
+/* برای صفحه‌های کوچک */
+@media (max-width:420px){
+  .refresh-btn { width:50px; height:50px; top:-25px; }
+  .bottom-nav { padding:0 12px; }
+}
 </style>
 </head>
 <body>
@@ -260,31 +336,30 @@ h1 {
       <div class="home-bg"></div>
       <div class="content">
         <h1>Onfi Shop</h1>
-        <p>اطلاع رسانی ها:</p>
+        <br>
+
         <div class="story-container" id="stories">
           <div class="story" data-gallery="1">
-            <div class="story-circle"><img src="download (5).jfif" alt="اطلاع‌رسانی"></div>
+            <div class="story-circle"><img src="InShot_20250904_220037087.jpg" alt="اطلاع‌رسانی"></div>
             <div class="story-label">اطلاع‌رسانی</div>
           </div>
         </div>
 
-        <!-- محصولات خانه -->
-        <p>بهترین ها :</p>
+        <br>
+        <p class="best-player-title">Best Player</p>
+
         <div class="product">
           <img src="IMG-20250904-WA0015.jpg" alt="محصول نمونه">
-          <h2></h2>
           <p>رضا باهوش</p>
           <p class="price">1 لیدربرد</p>
         </div>
         <div class="product">
           <img src="8034e5ff-681c-4c6c-8d2c-e88484b43724.jpg" alt="محصول نمونه">
-          <h2></h2>
           <p>رادین رقیب زاده</p>
           <p class="price">2 لیدربرد</p>
         </div>
         <div class="product">
           <img src="IMG-20250904-WA0018.jpg" alt="محصول نمونه">
-          <h2></h2>
           <p>رهام باهوش</p>
           <p class="price">3 لیدربرد</p>
         </div>
@@ -296,21 +371,30 @@ h1 {
       <div class="content">
         <h1 style="text-align:center; color:#3333ff;">اکانت ها</h1>
         <div class="product">
-          <img src="download (5).jfif" alt="محصول نمونه">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROBoYHlkVdgCVYyNONYiTYwE9Yb9yeUUDhEg&s" alt="محصول نمونه">
           <h2>اکانت ناب</h2>
           <p>اکانت ناب خوراک پلی</p>
-          <p class="price">قیمت: 50000 تومان</p>
+          <p class="price">قیمت: 50000000 تومان</p>
         </div>
       </div>
     </div>
   </main>
 
+  <div class="app-space-fixer"></div>
+
   <!-- ناوبری پایین -->
-  <div class="bottom-nav">
+  <div class="bottom-nav" id="bottomNav">
     <button class="active" data-page="home">
       <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
       خانه
     </button>
+
+    <div id="refreshBtn" class="refresh-btn" role="button" aria-label="بروزرسانی">
+      <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M17.65 6.35A7.95 7.95 0 0012 4V1L8 5l4 4V6c2.76 0 5 2.24 5 5a5 5 0 01-9.9 1H5a7 7 0 0012.65-5.65z"/>
+      </svg>
+    </div>
+
     <button data-page="shop">
       <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zm10 0c-1.1 0-1.99.9-1.99 2S15.9 22 17 22s2-.9 2-2-.9-2-2-2zM7.82 14h8.36l1.17-5H6.65l1.17 5zM20 4H5.21l-.94-2H0v2h2l3.6 7.59-1.35 2.44C3.52 14.37 4.48 16 6 16h12v-2H6.42c-.14 0-.25-.11-.25-.25l.03-.12L7.1 12h8.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49L20 4z"/></svg>
       خرید
@@ -321,7 +405,7 @@ h1 {
 <!-- مدال استوری -->
 <div class="story-modal" id="storyModal">
   <span class="close" id="closeModal">&times;</span>
-  <img src="" id="storyImage">
+  <img src="" id="storyImage" alt="">
   <div class="nav">
     <button class="prev">&lt;</button>
     <button class="next">&gt;</button>
@@ -329,11 +413,11 @@ h1 {
 </div>
 
 <script>
-// نمایش اپ بعد از 5 ثانیه
+// نمایش اپ بعد از 1 ثانیه
 setTimeout(() => {
   document.getElementById('splash').style.display = 'none';
   document.getElementById('appContainer').style.display = 'flex';
-}, 5000);
+}, 1000);
 
 // جلوگیری از زوم با ctrl+scroll
 window.addEventListener('wheel', function(e) {
@@ -363,7 +447,7 @@ buttons.forEach(btn => {
 
 // داده‌های تصاویر استوری
 const galleries = {
-  1: ["InShot_20250901_223256972.jpg"]
+  1: ["InShot_20250904_215717298.jpg"]
 };
 
 const modal = document.getElementById('storyModal');
@@ -375,7 +459,8 @@ let currentIndex = 0;
 document.querySelectorAll('.story').forEach(story=>{
   story.addEventListener('click', ()=>{
     const galleryId = story.dataset.gallery;
-    currentGallery = galleries[galleryId];
+    currentGallery = galleries[galleryId] || [];
+    if (!currentGallery.length) return;
     currentIndex = 0;
     modalImg.src = currentGallery[currentIndex];
     modal.style.display = 'flex';
@@ -389,12 +474,23 @@ document.getElementById('closeModal').addEventListener('click', ()=>{
 
 // دکمه بعدی / قبلی
 modal.querySelector('.next').addEventListener('click', ()=>{
+  if (!currentGallery.length) return;
   currentIndex = (currentIndex +1) % currentGallery.length;
   modalImg.src = currentGallery[currentIndex];
 });
 modal.querySelector('.prev').addEventListener('click', ()=>{
+  if (!currentGallery.length) return;
   currentIndex = (currentIndex -1 + currentGallery.length) % currentGallery.length;
   modalImg.src = currentGallery[currentIndex];
+});
+
+// دکمه رفرش
+const refreshBtn = document.getElementById("refreshBtn");
+refreshBtn.addEventListener("click", () => {
+  refreshBtn.classList.add("spin");
+  setTimeout(() => {
+    location.reload();
+  }, 900);
 });
 </script>
 </body>
