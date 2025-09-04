@@ -1,1 +1,69 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>اسپلش لودینگ</title>
+<style>
+  /* غیرقابل انتخاب کردن متن */
+  * {
+    -webkit-user-select: none; /* Safari */
+    -moz-user-select: none;    /* Firefox */
+    -ms-user-select: none;     /* IE10+/Edge */
+    user-select: none;         /* Standard */
+  }
+
+  body, html {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #000;
+    color: #fff;
+    font-family: 'Arial', sans-serif;
+    overflow: hidden;
+    touch-action: none; /* جلوگیری از زوم با دو انگشت */
+  }
+
+  .splash {
+    font-size: 3em;
+    font-weight: bold;
+    text-align: center;
+    animation: colorChange 5s infinite;
+  }
+
+  @keyframes colorChange {
+    0% { color: #ff0000; }
+    25% { color: #00ff00; }
+    50% { color: #0000ff; }
+    75% { color: #ff00ff; }
+    100% { color: #ff0000; }
+  }
+</style>
+</head>
+<body>
+  <div class="splash">Onfi Shop</div>
+
+  <script>
+    // جلوگیری از زوم با ctrl+scroll
+    window.addEventListener('wheel', function(e) {
+      if (e.ctrlKey) e.preventDefault();
+    }, { passive: false });
+
+    // جلوگیری از زوم با کلیدهای + و -
+    window.addEventListener('keydown', function(e) {
+      if ((e.ctrlKey && (e.key === '+' || e.key === '-' || e.key === '=')) || 
+          (e.key === 'F11')) {
+        e.preventDefault();
+      }
+    });
+
+    // بعد از 5 ثانیه به صفحه دیگه میره
+    setTimeout(() => {
+      window.location.href = "home.html";
+    }, 5000);
+  </script>
+</body>
+</html>
 
